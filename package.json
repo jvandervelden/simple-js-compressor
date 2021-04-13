@@ -1,6 +1,6 @@
 {
   "name": "simple-object-compressor",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Compresses/Expands an object's keys by an abbreviation map.",
   "main": "Compression.js",
   "scripts": {
