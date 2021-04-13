@@ -1,0 +1,23 @@
+{
+  "name": "simple-object-compressor",
+  "version": "0.0.1",
+  "description": "Compresses/Expands an object's keys by an abbreviation map.",
+  "main": "Compression.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jvandervelden/simple-js-compressor.git"
+  },
+  "author": "Jasper Vander Velden <jasper.vv@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jvandervelden/simple-js-compressor/issues"
+  },
+  "homepage": "https://github.com/jvandervelden/simple-js-compressor#readme",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "mocha": "^8.3.2"
+  }
+}
