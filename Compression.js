@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports = class Compression {
-	constructor(abbreviations) {
+	constructor(abbreviations, { maxDepth = -1 } = {}) {
+		this.maxDepth = maxDepth;
 		this.abbreviations = abbreviations;
 		this.expansions = Object.entries(abbreviations).reduce((acc, [key, val]) => {
 			acc[val] = key;
@@ -13,17 +14,21 @@ module.exports = class Compression {
 		return typeof arg === 'object' && arg !== null;
 	}
 
-	compact(arg) {
+	compact(arg, depth = 0) {
+		if (this.maxDepth !== -1 && depth > this.maxDepth) {
+			return arg;
+		}
+
 		if (typeof arg === 'string') {
 			const abbreviation = this.abbreviations[arg];
 			if (abbreviation) {
 				return abbreviation;
 			}
 		} else if (Array.isArray(arg)) {
-			return arg.map((val) => this.compact(val));
+			return arg.map((val) => this.compact(val, depth));
 		} else if (this._isObject(arg)) {
 			return Object.entries(arg).reduce((acc, [key, val]) => {
-				acc[this.compact(key)] = this._isObject(val) ? this.compact(val) : val;
+				acc[this.compact(key, depth)] = this._isObject(val) ? this.compact(val, depth + 1) : val;
 				return acc;
 			}, {});
 		}
@@ -31,17 +36,21 @@ module.exports = class Compression {
 		return arg;
 	}
 
-	expand(arg) {
+	expand(arg, depth = 0) {
+		if (this.maxDepth !== -1 && depth > this.maxDepth) {
+			return arg;
+		}
+
 		if (typeof arg === 'string') {
 			const expansion = this.expansions[arg];
 			if (expansion) {
 				return expansion;
 			}
 		} else if (Array.isArray(arg)) {
-			return arg.map((val) => this.expand(val));
+			return arg.map((val) => this.expand(val, depth));
 		} else if (this._isObject(arg)) {
 			return Object.entries(arg).reduce((acc, [key, val]) => {
-				acc[this.expand(key)] = this._isObject(val) ? this.expand(val) : val;
+				acc[this.expand(key, depth)] = this._isObject(val) ? this.expand(val, depth + 1) : val;
 				return acc;
 			}, {});
 		}
